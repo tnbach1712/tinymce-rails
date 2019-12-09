@@ -1,0 +1,8 @@
+tmp
+*.gem
+Gemfile.lock
+gemfiles/*.lock
+sandbox/log
+sandbox/tmp
+sandbox/public/assets
+vendor/assets/**/*.less

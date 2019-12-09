@@ -1,0 +1,7 @@
+default:
+
+custom:
+  plugins:
+    - table
+    - fullscreen
+    - link
