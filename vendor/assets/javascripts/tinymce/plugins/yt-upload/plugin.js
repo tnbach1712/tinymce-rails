@@ -294,7 +294,7 @@ var UploadVideo = function () {
    * The array of tags for the new YouTube video.
    *
    * @attribute tags
-   * @type Array.<string>
+   * @type Array.<>
    * @default ['google-cors-upload']
    */
   this.tags = ['youtube-cors-upload'];
@@ -327,7 +327,6 @@ var UploadVideo = function () {
 
 
 UploadVideo.prototype.ready = function (accessToken) {
-  console.log(accessToken)
   this.accessToken = accessToken;
   gapi.auth.setToken({ access_token: accessToken })
   this.gapi = gapi;
@@ -378,6 +377,7 @@ UploadVideo.prototype.uploadFile = function (file, cb) {
       privacyStatus: 'public'
     }
   };
+  console.log(metadata);
   var uploader = new MediaUploader({
     baseUrl: 'https://www.googleapis.com/upload/youtube/v3/videos',
     file: file,
@@ -391,14 +391,16 @@ UploadVideo.prototype.uploadFile = function (file, cb) {
       // Assuming the error is raised by the YouTube API, data will be
       // a JSON string with error.message set. That may not be the
       // only time onError will be raised, though.
+      console.log(message)
       try {
         var errorResponse = JSON.parse(data);
         message = errorResponse.error.message;
       } finally {
-        alert(message);
+        alert(message);        
       }
     }.bind(this),
     onProgress: function (data) {
+      console.log(data)
       var currentTime = Date.now();
       var bytesUploaded = data.loaded;
       var totalBytes = data.total;
@@ -426,6 +428,7 @@ UploadVideo.prototype.uploadFile = function (file, cb) {
   });
   // This won't correspond to the *exact* start of the upload, but it should be close enough.
   this.uploadStartTime = Date.now();
+  console.log('uploaded')
   uploader.upload();
 };
 
@@ -479,6 +482,7 @@ UploadVideo.prototype.pollForVideoStatus = function () {
 
 
 tinymce.PluginManager.add('yt-upload', function (editor, url) {
+  var uploadVideo = new UploadVideo()
   var openDialog = function () {
     console.log(editor)
     return editor.windowManager.open({
@@ -509,7 +513,7 @@ tinymce.PluginManager.add('yt-upload', function (editor, url) {
           },
           {
             type: 'htmlpanel', // component type
-            html: '<div id="upload-processing"> </div>'
+            html: '<div class="during-upload" style="display: none;" > <p><span id="percent-transferred"></span>%  (<span id="bytes-transferred"></span>/<span id="total-bytes"></span> bytes)</p> <progress id="upload-progress" max="1" value="0" style="height: 5px; width: 100%;"></progress> </div>'
           }
         ]
       },
@@ -525,28 +529,27 @@ tinymce.PluginManager.add('yt-upload', function (editor, url) {
         }
       ],
       initialData: {
+        
       },
       onSubmit: function (api) {
         var data = api.getData();
         var html = createVideoNode(data.url)
-        editor.insertContent(`${html.outerHTML}`);
+        editor.insertContent(html.outerHTML);
         api.close();
       },
       onChange: function (api) {
         var data = api.getData();
-        console.log(api)
-        console.log(data)
         api.enable("upload-youtube")
       },
       onAction: function (api, details) {
         var data = api.getData();
-        editor.settings.uploadVideo.ready(editor.settings.ytAccessToken)
-        editor.settings.uploadVideo.uploadFile(data.fileupload.meta.file, function (data) {
+        uploadVideo.ready(editor.settings.ytAccessToken)
+        uploadVideo.uploadFile(data.fileupload.meta.file, function (data) {
           console.log(data)
           api.setData({ url: "https://www.youtube.com/watch?v=" + data.videoId })
         })
 
-        $('#upload-processing').css("border", "solid 1px")
+        $('.during-upload').show()
       }
     });
   };
