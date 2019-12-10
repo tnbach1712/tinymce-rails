@@ -1,0 +1,27 @@
+.mce-eco-panel-title {
+}
+
+.mce-eco-panel-content {
+  height: 460px;
+  width: 860px;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+}
+
+.mce-eco-image-cell {
+  width: 100px;
+  height: 120px;
+  overflow: hidden;
+  text-align: center;
+  padding: 10px;
+}
+
+img.mce-eco-image {
+  width: 100px;
+}
+
+p.mce-eco-image-title {
+  text-align: center;
+  padding-top: 5px;
+}
