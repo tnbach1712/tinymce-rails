@@ -2257,17 +2257,20 @@
         onChange: changeHandler(helpers, info, state),
         onClose: closeHandler(state),
         onTabChange: function (api, details){
-          // console.log(details)
-          var imageDivs = document.querySelectorAll('.mce-eco-image');
-          console.log(imageDivs)
-          for (var i = 0; i < imageDivs.length; i++) {
-            imageDivs[i].addEventListener('click', function () {              
-              console.log(info)
-              console.log(this.getAttribute('src'))
-              api.setData({ images:  this.getAttribute('src') })
-              changeImages(helpers, info, state, api);
-              api.showTab('general');
-            });
+          console.log(details)
+          if (details.newTabName == "list" ){
+
+            var imageDivs = document.querySelectorAll('.mce-eco-image');
+            console.log(imageDivs)
+            for (var i = 0; i < imageDivs.length; i++) {
+              imageDivs[i].addEventListener('click', function () {
+                console.log(info)
+                console.log(this.getAttribute('src'))
+                api.setData({ images: this.getAttribute('src') })
+                changeImages(helpers, info, state, api);
+                api.showTab('general');
+              });
+            }
           }
         },
       };
@@ -2393,7 +2396,6 @@
       imageTitle.innerHTML = title;
       image.setAttribute('src', imageList[imageIndex].value);
       image.setAttribute('class', 'mce-eco-image');
-      image.setAttribute('data-id', title.split(' ').join('-'));
       imageDiv.appendChild(image);
       imageDiv.appendChild(imageTitle);
       contentDiv.appendChild(imageDiv);
