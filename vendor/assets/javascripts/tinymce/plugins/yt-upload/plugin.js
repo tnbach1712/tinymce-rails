@@ -493,16 +493,16 @@ tinymce.PluginManager.add('yt-upload', function (editor, url) {
           {
             type: 'input',
             name: 'url',
-            label: 'Url video'
+            label: 'Url video (Youtube, Instagram, Vimeo, Vine, QQ, Facebook)'
           }, {
             type: 'htmlpanel',
-            html: "<p> HOặc </p>"
+            html: "<p> Hoặc </p>"
           },
           {
             type: 'urlinput',
             name: 'fileupload',
             filetype: 'media',
-            label: 'Url video'
+            label: 'Upload from local.'
           },
           {
             type: 'button', // component type
