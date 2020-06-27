@@ -675,7 +675,8 @@ tinymce.PluginManager.add('yt-upload', function (editor, url) {
   }
   // Add a button that opens a window
   editor.ui.registry.addButton('yt-upload', {
-    text: '<i class="fa fa-youtube-play"></i>',
+    // text: '<i class="fa fa-youtube-play"></i>',
+    icon: "utube",
     onAction: function () {
       // Open window
       openDialog();
