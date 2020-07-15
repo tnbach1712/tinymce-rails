@@ -485,37 +485,54 @@ tinymce.PluginManager.add('yt-upload', function (editor, url) {
   var uploadVideo = new UploadVideo()
   var openDialog = function () {
     console.log(editor)
+    var items ;
+    if(editor.settings.ytAccessToken){
+      items =  [
+        {
+          type: 'input',
+          name: 'url',
+          label: 'Url video (Youtube, Instagram, Vimeo, Vine, QQ, Facebook)'
+        },
+        {
+          type: 'htmlpanel',
+          html: "<p> Hoặc </p>"
+        },
+        {
+          type: 'urlinput',
+          name: 'fileupload',
+          filetype: 'media',
+          label: 'Upload from local.'
+        },
+        {
+          type: 'button', // component type
+          text: 'Upload Youtube',
+          primary: true,
+          name: 'upload-youtube',
+          disabled: true
+        },
+        {
+          type: 'htmlpanel', // component type
+          html: '<div class="during-upload" style="display: none;" > <p><span id="percent-transferred"></span>%  (<span id="bytes-transferred"></span>/<span id="total-bytes"></span> bytes)</p> <progress id="upload-progress" max="1" value="0" style="height: 5px; width: 100%;"></progress> </div>'
+        }
+      ]
+    }else{
+      items=  [
+        {
+          type: 'input',
+          name: 'url',
+          label: 'Url video (Youtube, Instagram, Vimeo, Vine, QQ, Facebook)'
+        },
+        {
+          type: 'htmlpanel', // component type
+          html: '<div class="during-upload" style="display: none;" > <p><span id="percent-transferred"></span>%  (<span id="bytes-transferred"></span>/<span id="total-bytes"></span> bytes)</p> <progress id="upload-progress" max="1" value="0" style="height: 5px; width: 100%;"></progress> </div>'
+        }
+      ]
+    }
     return editor.windowManager.open({
       title: 'Embed Video',
       body: {
         type: 'panel',
-        items: [
-          {
-            type: 'input',
-            name: 'url',
-            label: 'Url video (Youtube, Instagram, Vimeo, Vine, QQ, Facebook)'
-          }, {
-            type: 'htmlpanel',
-            html: "<p> Hoặc </p>"
-          },
-          {
-            type: 'urlinput',
-            name: 'fileupload',
-            filetype: 'media',
-            label: 'Upload from local.'
-          },
-          {
-            type: 'button', // component type
-            text: 'Upload Youtube',
-            primary: true,
-            name: 'upload-youtube',
-            disabled: true
-          },
-          {
-            type: 'htmlpanel', // component type
-            html: '<div class="during-upload" style="display: none;" > <p><span id="percent-transferred"></span>%  (<span id="bytes-transferred"></span>/<span id="total-bytes"></span> bytes)</p> <progress id="upload-progress" max="1" value="0" style="height: 5px; width: 100%;"></progress> </div>'
-          }
-        ]
+        items: items
       },
       buttons: [
         {
